@@ -12,9 +12,9 @@ class DataSet(BaseModel):
     suggested: str | None = Field(alias="Suggested", default=None)
     average_depth: float = Field(alias="averageDepth")
     breadth_value: float | None = Field(alias="breadthValue", default=None)
-    items: list[Self]|None = Field(default=None)
+    items: list[Self] | None = Field(default=None)
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_name(self):
         self.name = self.label.replace(self.id, "").strip()
         return self
