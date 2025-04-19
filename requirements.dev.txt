@@ -1,3 +1,4 @@
 -r requirements.txt
-pre-commit
-pytest
+pre-commit # https://github.com/pre-commit/pre-commit
+pytest # https://github.com/pytest-dev/pytest/
+pytest-asyncio # https://github.com/pytest-dev/pytest-asyncio
