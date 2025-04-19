@@ -1,2 +1,3 @@
 httpx # https://github.com/encode/httpxp
 pydantic # https://github.com/pydantic/pydantic
+aiofiles # https://github.com/Tinche/aiofiles
