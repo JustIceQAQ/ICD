@@ -3,7 +3,7 @@ import json
 import pathlib
 from functools import partial
 from typing import Any
-from helpers.v10.schemas import DataSet
+from helpers.icd.v10.schemas import DataSet
 import aiofiles
 
 import httpx
@@ -49,10 +49,10 @@ class ICD10:
         await self._load()
         if self._cache:
             return self._cache
-        root_data = await self.get_root_item()
+        root_data = await self._get_root_item()
         tasks = []
         for item in root_data:
-            tasks.append(self.get_children(item))
+            tasks.append(self._get_children(item))
         await asyncio.gather(*tasks)
         self._cache = root_data
         await self._dump()
@@ -66,24 +66,19 @@ class ICD10:
             response.raise_for_status()
         return response.json()
 
-    async def get_root_item(self) -> list[DataSet]:
+    async def _get_root_item(self) -> list[DataSet]:
         this_url = self._root_url
         response_json = await self._get_url(this_url)
         return [DataSet.model_validate(item) for item in response_json]
 
-    async def get_children_item(self, children_id: str) -> list[DataSet]:
-        this_url = self._children_url.format(children_id=children_id)
-        response_json = await self._get_url(this_url)
-        return [DataSet.model_validate(item) for item in response_json]
-
-    async def get_children(self, dataset: DataSet):
+    async def _get_children(self, dataset: DataSet):
         this_url = self._children_url.format(children_id=dataset.id)
         response_json = await self._get_url(this_url)
         dataset.items = [DataSet.model_validate(item) for item in response_json]
         tasks = []
         for item in dataset.items:
             if not item.is_leaf:
-                tasks.append(self.get_children(item))
+                tasks.append(self._get_children(item))
 
         if tasks:
             await asyncio.gather(*tasks)

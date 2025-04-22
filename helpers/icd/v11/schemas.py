@@ -3,8 +3,8 @@ from typing import Self, Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from helpers.v11.columns import Column
-from helpers.v11.confuse import anti_confuse
+from helpers.icd.v11.columns import Column
+from helpers.icd.v11.confuse import anti_confuse
 
 
 class BrowseGt(BaseModel):

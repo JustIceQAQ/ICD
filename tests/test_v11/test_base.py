@@ -1,5 +1,5 @@
 import pytest
-from helpers.v11.base import ICD11
+from helpers.icd.v11.base import ICD11
 import hashlib
 
 

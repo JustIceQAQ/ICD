@@ -1,4 +1,4 @@
-from helpers.v11.confuse import anti_confuse
+from helpers.icd.v11 import anti_confuse
 
 
 def test_anti_confuse():

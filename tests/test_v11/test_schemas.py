@@ -1,6 +1,6 @@
 import pprint
 
-from helpers.v11.schemas import Chapter, Root, Category, Block
+from helpers.icd.v11 import Chapter, Root, Category, Block
 
 
 def test_root():
