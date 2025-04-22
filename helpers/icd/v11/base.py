@@ -23,7 +23,9 @@ class ICD11:
         }
         self._cache_file = f"icd11_{year}_{version}.json"
         self._cache: Root | None = None
-        self._file_folder = pathlib.Path(__file__).parent.parent.parent / "dataset"
+        self._file_folder = (
+            pathlib.Path(__file__).parent.parent.parent.parent / "dataset"
+        )
 
     async def _load(self):
         if pathlib.Path(self._file_folder / self._cache_file).is_file():
@@ -85,7 +87,7 @@ class ICD11:
         await self.get_token()
         root_data = await self._get_root_data()
         root_data.child = await asyncio.gather(
-            *[self._get_children_data(child) for child in root_data.child]
+            *[self._get_children_data(child) for child in root_data.child[:1]]
         )
         self._cache = root_data
         await self._dump()

@@ -28,7 +28,9 @@ class ICD10:
         }
         self._cache_file = f"icd10_{year}_{LANGUAGE}.json"
         self._cache: list[DataSet] | None = None
-        self._file_folder = pathlib.Path(__file__).parent.parent.parent / "dataset"
+        self._file_folder = (
+            pathlib.Path(__file__).parent.parent.parent.parent / "dataset"
+        )
 
     async def _load(self):
         if pathlib.Path(self._file_folder / self._cache_file).is_file():
