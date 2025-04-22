@@ -1,6 +1,7 @@
 import asyncio
 import json
 import pathlib
+from functools import partial
 
 import aiofiles
 
@@ -92,3 +93,15 @@ class ICD11:
         self._cache = root_data
         await self._dump()
         return root_data
+
+
+ICD11Y2025_01 = partial(ICD11, year=2025, version="01")
+ICD11Y2024_01 = partial(ICD11, year=2024, version="01")
+ICD11Y2023_01 = partial(ICD11, year=2023, version="01")
+
+__all__ = [
+    "ICD11Y2025_01",
+    "ICD11Y2024_01",
+    "ICD11Y2023_01",
+    "ICD11",
+]
