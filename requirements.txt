@@ -2,3 +2,5 @@ httpx # https://github.com/encode/httpxp
 pydantic # https://github.com/pydantic/pydantic
 aiofiles # https://github.com/Tinche/aiofiles
 fake-useragent # https://github.com/fake-useragent/fake-useragent
+diskcache # https://github.com/grantjenks/python-diskcache
+croniter # https://github.com/kiorky/croniter
