@@ -1,21 +1,18 @@
 import pytest
-from helpers.icd.v11.base import ICD11
-import hashlib
+from helpers.icd.v11.base import ICD11Y2024_01, ICD11Y2025_01, ICD11Y2023_01
+from helpers.icd.v11.schemas import Root
 
 
 @pytest.mark.asyncio
-async def test_get_token():
-    icd11 = ICD11()
-    await icd11.get_token()
-    assert "authorization" in icd11.get_headers()
-
-
-@pytest.mark.asyncio
-async def test_get_datasets():
-    icd11 = ICD11()
-    await icd11.get_datasets()
-
-
-def testr_hash():
-    url = "httpswww.twitch.tvshuteye_orange"
-    print(hashlib.sha256(url.encode()).hexdigest())
+@pytest.mark.parametrize(
+    "icd",
+    [
+        ICD11Y2024_01,
+        ICD11Y2025_01,
+        ICD11Y2023_01,
+    ],
+)
+async def test_get_dataset(icd):
+    icd11 = icd()
+    dataset = await icd11.get_dataset()
+    assert isinstance(dataset, Root) is True

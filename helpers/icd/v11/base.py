@@ -81,7 +81,7 @@ class ICD11:
 
         return new_data
 
-    async def get_datasets(self):
+    async def get_dataset(self):
         await self._load()
         if self._cache:
             return self._cache
