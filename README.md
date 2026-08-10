@@ -30,4 +30,7 @@ ccd.get_dataset()
 
 ----
 
+- [ICD-11: 2023-01](https://icd.who.int/browse/2023-01/mms/en)
+- [ICD-11: 2024-01](https://icd.who.int/browse/2024-01/mms/en)
 - [ICD-11: 2025-01](https://icd.who.int/browse/2025-01/mms/en)
+- [ICD-11: 2026-01](https://icd.who.int/browse/2026-01/mms/en)

@@ -26,7 +26,9 @@ import hashlib
 async def test_get_dataset(icd):
     icd10 = icd()
     dataset = await icd10.get_dataset()
-    assert isinstance(dataset, DataSet) is True
+    assert isinstance(dataset, list) is True
+    for item in dataset:
+        assert isinstance(item, DataSet) is True
 
 
 def testr_hash():

@@ -4,11 +4,10 @@ import pathlib
 from functools import partial
 
 import aiofiles
+import httpx
 
 from helpers.cache_httpx import CacheHttpX
 from helpers.fake_useragent.helper import get_random_user_agent
-import httpx
-
 from helpers.icd.v11.schemas import BrowseGt, Root
 
 
@@ -95,11 +94,13 @@ class ICD11:
         return root_data
 
 
+ICD11Y2026_01 = partial(ICD11, year=2026, version="01")
 ICD11Y2025_01 = partial(ICD11, year=2025, version="01")
 ICD11Y2024_01 = partial(ICD11, year=2024, version="01")
 ICD11Y2023_01 = partial(ICD11, year=2023, version="01")
 
 __all__ = [
+    "ICD11Y2026_01",
     "ICD11Y2025_01",
     "ICD11Y2024_01",
     "ICD11Y2023_01",
