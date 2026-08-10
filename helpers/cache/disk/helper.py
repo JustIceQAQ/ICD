@@ -3,11 +3,12 @@ import datetime
 import functools
 import pathlib
 from typing import Any
+from zoneinfo import ZoneInfo
+
 from croniter import croniter
 from diskcache import Cache as disk_cache
 
 from helpers.cache.base import Cache
-from zoneinfo import ZoneInfo
 
 
 class DiskCache(Cache):
@@ -20,12 +21,7 @@ class DiskCache(Cache):
         return cls._instance
 
     def __init__(self):
-        self.cache = disk_cache(
-            str(
-                pathlib.Path(__file__).parent.parent.parent.parent.absolute()
-                / "fixture"
-            )
-        )
+        self.cache = disk_cache(str(pathlib.Path(__file__).parent.parent.parent.parent.absolute() / "fixture"))
         self.loop = asyncio.get_running_loop()
 
     async def get(self, key: str) -> Any | None:
@@ -37,9 +33,7 @@ class DiskCache(Cache):
     def get_datetime_now(self):
         return datetime.datetime.now(tz=self._zoneinfo)
 
-    def croniter_str_to_seconds(
-        self, croniter_string: str, from_datetime: datetime.datetime | None = None
-    ) -> int:
+    def croniter_str_to_seconds(self, croniter_string: str, from_datetime: datetime.datetime | None = None) -> int:
         runtime_now = self.get_datetime_now()
         croniter_iter = croniter(croniter_string, (from_datetime or runtime_now))
         next_time: datetime.datetime = croniter_iter.get_next(datetime.datetime)
@@ -60,9 +54,7 @@ class DiskCache(Cache):
             expire_seconds = None
 
         loop = asyncio.get_running_loop()
-        future = loop.run_in_executor(
-            None, functools.partial(self.cache.set, key, value, expire=expire_seconds)
-        )
+        future = loop.run_in_executor(None, functools.partial(self.cache.set, key, value, expire=expire_seconds))
         result = await future
         return result
 

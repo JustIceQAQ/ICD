@@ -1,5 +1,5 @@
 import datetime
-from typing import Self, Any, Literal
+from typing import Any, Literal, Self
 
 from pydantic import BaseModel, Field, model_validator
 

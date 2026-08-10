@@ -3,10 +3,11 @@ import json
 import pathlib
 from functools import partial
 from typing import Any
-from helpers.icd.v10.schemas import DataSet
-import aiofiles
 
+import aiofiles
 import httpx
+
+from helpers.icd.v10.schemas import DataSet
 
 LANGUAGE = "en"
 
@@ -17,10 +18,7 @@ class ICD10:
         self._base_url = f"https://icd.who.int/browse10/{year}/{LANGUAGE}"
         self._root_url = f"{self._base_url}/JsonGetRootConcepts?useHtml=false"
         self._children_url = (
-            self._base_url + "/JsonGetChildrenConcepts?"
-            "ConceptId={children_id}"
-            "&useHtml=false"
-            "&showAdoptedChildren=false"
+            self._base_url + "/JsonGetChildrenConcepts?ConceptId={children_id}&useHtml=false&showAdoptedChildren=false"
         )
         self._headers = {
             "x-requested-with": "XMLHttpRequest",
@@ -28,13 +26,11 @@ class ICD10:
         }
         self._cache_file = f"icd10_{year}_{LANGUAGE}.json"
         self._cache: list[DataSet] | None = None
-        self._file_folder = (
-            pathlib.Path(__file__).parent.parent.parent.parent / "dataset"
-        )
+        self._file_folder = pathlib.Path(__file__).parent.parent.parent.parent / "dataset"
 
     async def _load(self):
         if pathlib.Path(self._file_folder / self._cache_file).is_file():
-            async with aiofiles.open(self._file_folder / self._cache_file, "r") as file:
+            async with aiofiles.open(self._file_folder / self._cache_file) as file:
                 raw_data = json.loads(await file.read())
             self._cache = [DataSet.model_validate(item) for item in raw_data]
 
@@ -42,9 +38,7 @@ class ICD10:
         if not pathlib.Path(self._file_folder / self._cache_file).is_file():
             (self._file_folder / self._cache_file).touch(exist_ok=True)
         async with aiofiles.open(self._file_folder / self._cache_file, "w") as file:
-            json_str = json.dumps(
-                [item.model_dump(by_alias=True) for item in self._cache], indent=4
-            )
+            json_str = json.dumps([item.model_dump(by_alias=True) for item in self._cache], indent=4)
             await file.write(json_str)
 
     async def get_dataset(self) -> list[DataSet]:
@@ -61,9 +55,7 @@ class ICD10:
         return root_data
 
     async def _get_url(self, url: str) -> list[dict[str, Any]]:
-        async with httpx.AsyncClient(
-            timeout=None, headers=self._headers, verify=False
-        ) as client:
+        async with httpx.AsyncClient(timeout=None, headers=self._headers, verify=False) as client:
             response = await client.get(url)
             response.raise_for_status()
         return response.json()

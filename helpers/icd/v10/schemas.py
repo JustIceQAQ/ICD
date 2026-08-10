@@ -1,6 +1,6 @@
 from typing import Self
 
-from pydantic import BaseModel, Field, model_validator, field_serializer
+from pydantic import BaseModel, Field, field_serializer, model_validator
 
 
 class DataSet(BaseModel):

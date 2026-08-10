@@ -15,9 +15,7 @@ class Column:
     @staticmethod
     def has_fully_specified_name(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
         if "fullySpecifiedName" in raw_data.keys():
-            cooked_data["fully_specified_name"] = raw_data["fullySpecifiedName"][
-                "@value"
-            ]
+            cooked_data["fully_specified_name"] = raw_data["fullySpecifiedName"]["@value"]
 
     @staticmethod
     def has_description(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
@@ -27,23 +25,17 @@ class Column:
     @staticmethod
     def has_inclusion(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
         if "inclusion" in raw_data.keys():
-            cooked_data["inclusion"] = [
-                item["label"]["@value"] for item in raw_data["inclusion"]
-            ]
+            cooked_data["inclusion"] = [item["label"]["@value"] for item in raw_data["inclusion"]]
 
     @staticmethod
     def has_exclusions(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
         if "exclusion" in raw_data.keys():
-            cooked_data["exclusions"] = [
-                item["label"]["@value"] for item in raw_data["exclusion"]
-            ]
+            cooked_data["exclusions"] = [item["label"]["@value"] for item in raw_data["exclusion"]]
 
     @staticmethod
     def has_all_index_terms(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
         if "indexTerm" in raw_data.keys():
-            cooked_data["all_index_terms"] = [
-                item["label"]["@value"] for item in raw_data["indexTerm"]
-            ]
+            cooked_data["all_index_terms"] = [item["label"]["@value"] for item in raw_data["indexTerm"]]
 
     @staticmethod
     def has_coded_elsewhere(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
@@ -77,10 +69,6 @@ class Column:
             cooked_data["url"] = raw_data["@id"]
 
     @staticmethod
-    def has_related_entities_in_perinatal_chapter(
-        raw_data: dict[str, Any], cooked_data: dict[str, Any]
-    ):
+    def has_related_entities_in_perinatal_chapter(raw_data: dict[str, Any], cooked_data: dict[str, Any]):
         if "relatedEntitiesInPerinatalChapter" in raw_data.keys():
-            cooked_data["related_entities_in_perinatal_chapter"] = raw_data[
-                "relatedEntitiesInPerinatalChapter"
-            ]
+            cooked_data["related_entities_in_perinatal_chapter"] = raw_data["relatedEntitiesInPerinatalChapter"]

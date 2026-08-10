@@ -1,14 +1,16 @@
+import hashlib
+
 import pytest
+
 from helpers.icd.v10 import (
     ICD10Y2008,
-    ICD10Y2019,
-    ICD10Y2016,
-    ICD10Y2015,
-    ICD10Y2014,
     ICD10Y2010,
+    ICD10Y2014,
+    ICD10Y2015,
+    ICD10Y2016,
+    ICD10Y2019,
 )
 from helpers.icd.v10.schemas import DataSet
-import hashlib
 
 
 @pytest.mark.asyncio

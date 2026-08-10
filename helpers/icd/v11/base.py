@@ -23,24 +23,18 @@ class ICD11:
         }
         self._cache_file = f"icd11_{year}_{version}.json"
         self._cache: Root | None = None
-        self._file_folder = (
-            pathlib.Path(__file__).parent.parent.parent.parent / "dataset"
-        )
+        self._file_folder = pathlib.Path(__file__).parent.parent.parent.parent / "dataset"
 
     async def _load(self):
         if pathlib.Path(self._file_folder / self._cache_file).is_file():
-            async with aiofiles.open(
-                self._file_folder / self._cache_file, "r", encoding="utf-8"
-            ) as file:
+            async with aiofiles.open(self._file_folder / self._cache_file, encoding="utf-8") as file:
                 raw_data = json.loads(await file.read())
             self._cache = Root.model_validate(raw_data)
 
     async def _dump(self):
         if not pathlib.Path(self._file_folder / self._cache_file).is_file():
             (self._file_folder / self._cache_file).touch(exist_ok=True)
-        async with aiofiles.open(
-            self._file_folder / self._cache_file, "w", encoding="utf-8"
-        ) as file:
+        async with aiofiles.open(self._file_folder / self._cache_file, "w", encoding="utf-8") as file:
             json_str = self._cache.model_dump_json(indent=4, by_alias=True)
             await file.write(json_str)
 
@@ -49,9 +43,7 @@ class ICD11:
 
     async def get_token(self):
         browse_gt_url = "https://icd.who.int/browse/gt"
-        async with httpx.AsyncClient(
-            headers=self.get_headers(), verify=False
-        ) as client:
+        async with httpx.AsyncClient(headers=self.get_headers(), verify=False) as client:
             response = await client.get(browse_gt_url)
         data = BrowseGt.model_validate(response.json())
         if data.token is None:
@@ -60,23 +52,17 @@ class ICD11:
 
     async def _get_root_data(self) -> Root:
         async with CacheHttpX(verify=False) as client:
-            response_json = await client.get_response_json(
-                self._root_url, headers=self.get_headers()
-            )
+            response_json = await client.get_response_json(self._root_url, headers=self.get_headers())
         return Root.model_validate_source(response_json)
 
     async def _get_children_data(self, data):
         async with CacheHttpX(verify=False, timeout=None) as client:
-            response_json = await client.get_response_json(
-                data.url, headers=self.get_headers()
-            )
+            response_json = await client.get_response_json(data.url, headers=self.get_headers())
 
         new_data = data.model_validate_source(response_json)
 
         if hasattr(new_data, "child") and new_data.child:
-            new_data.child = await asyncio.gather(
-                *[self._get_children_data(child) for child in new_data.child]
-            )
+            new_data.child = await asyncio.gather(*[self._get_children_data(child) for child in new_data.child])
 
         return new_data
 
@@ -86,9 +72,7 @@ class ICD11:
             return self._cache
         await self.get_token()
         root_data = await self._get_root_data()
-        root_data.child = await asyncio.gather(
-            *[self._get_children_data(child) for child in root_data.child[:1]]
-        )
+        root_data.child = await asyncio.gather(*[self._get_children_data(child) for child in root_data.child[:1]])
         self._cache = root_data
         await self._dump()
         return root_data
