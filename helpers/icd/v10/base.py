@@ -5,7 +5,7 @@ from functools import partial
 from typing import Any
 
 import aiofiles
-import httpx
+import httpx2 as httpx
 
 from helpers.icd.v10.schemas import DataSet
 

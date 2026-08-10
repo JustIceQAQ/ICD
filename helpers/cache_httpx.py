@@ -1,6 +1,6 @@
 from typing import Self
 
-import httpx
+import httpx2 as httpx
 
 from helpers.cache import DiskCache
 from helpers.communication.base64 import Base64Helper

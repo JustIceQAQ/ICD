@@ -4,7 +4,7 @@ import pathlib
 from functools import partial
 
 import aiofiles
-import httpx
+import httpx2 as httpx
 
 from helpers.cache_httpx import CacheHttpX
 from helpers.fake_useragent.helper import get_random_user_agent
