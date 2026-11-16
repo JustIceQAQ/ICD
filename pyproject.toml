@@ -12,7 +12,7 @@ classifiers = [
 ]
 dependencies = [
   "aiofiles>=25.1",
-  "croniter>=6.2.4",
+  "croniter>=7.0.0",
   "diskcache>=5.6.3",
   "fake-useragent>=2.2",
   "httpx2>=2.16.0",
@@ -24,7 +24,7 @@ dependencies = [
 dev = [
   "pre-commit>=4.7.0",
   "pytest>=9.2.0",
-  "pytest-asyncio>=1.4.1.post1",
+  "pytest-asyncio>=1.5.0",
 ]
 
 [tool.ruff]
